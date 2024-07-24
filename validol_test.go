@@ -112,14 +112,14 @@ var _ validol.Validatable = M{}
 var _ validol.Validatable = &M{}
 
 func (m M) Validate() error {
-	return validol.Visit(m)
+	return validol.Walk(m)
 }
 
-func TestVisit(t *testing.T) {
+func TestWalf(t *testing.T) {
 	m := &M{Pub: 0, private: 1}
-	assert.NoError(t, validol.Visit(*m))
-	assert.NoError(t, validol.Visit(m))
-	assert.NoError(t, validol.Visit(&m))
+	assert.NoError(t, validol.Walk(*m))
+	assert.NoError(t, validol.Walk(m))
+	assert.NoError(t, validol.Walk(&m))
 }
 
 func TestGt(t *testing.T) {

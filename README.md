@@ -7,7 +7,6 @@ go get github.com/cospectrum/validol@latest
 ```
 
 ## Usage
-
 ```go
 import (
 	"errors"
@@ -17,18 +16,17 @@ import (
 type Sex string
 
 func (s Sex) Validate() error {
-	isSex := validol.OneOf("male", "female", "other")
-	return isSex(string(s))
+	return validol.OneOf[Sex]("male", "female", "other")(s)
 }
 
 type Email string
 
 func (e Email) Validate() error {
-	validate := validol.All(
+	bound := validol.All(validol.Gt(5), validol.Lte(100))
+	return validol.All(
+		validol.Len[string](bound),
 		validol.Email,
-		validol.Len[string](validol.Lte(100)),
-	)
-	return validate(string(e))
+	)(string(e))
 }
 
 type Info struct {
@@ -37,16 +35,16 @@ type Info struct {
 	age   uint
 }
 
-func (i Info) Validate() error {
-	if i.age < 18 {
-		return errors.New("18+")
-	}
-	return validol.Visit(i)
+func (info Info) Validate() error {
+	return errors.Join(
+		validol.Walk(info),
+		validol.Gte(uint(18))(info.age),
+	)
 }
 
 func main() {
-	var i Info
-	if err := i.Validate(); err != nil {
+	var info Info
+	if err := info.Validate(); err != nil {
 		panic(err)
 	}
 }

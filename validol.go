@@ -47,8 +47,8 @@ func Any[T any](validators ...Validator[T]) Validator[T] {
 	}
 }
 
-func Visit[T any](t T) error {
-	return visitChildren(t)
+func Walk[T any](t T) error {
+	return walkDescendants(t)
 }
 
 func Not[T any](fn Validator[T]) Validator[T] {
