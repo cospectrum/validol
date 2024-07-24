@@ -1,6 +1,8 @@
 package validol
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Validator[Of any] func(Of) error
 
@@ -42,4 +44,8 @@ func Any[T any](validators ...Validator[T]) Validator[T] {
 		}
 		return lastErr
 	}
+}
+
+func Visit[T any](t T) error {
+	return visitChildren(t)
 }

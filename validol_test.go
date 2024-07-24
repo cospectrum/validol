@@ -7,6 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func chain[T any](slices ...[]T) []T {
+	out := make([]T, 0)
+	for _, slice := range slices {
+		out = append(out, slice...)
+	}
+	return out
+}
+
 func TestOneOf(t *testing.T) {
 	assert.NoError(t, validol.OneOf(2, 1, 3)(1))
 	assert.Error(t, validol.OneOf(2, 3)(1))
@@ -95,10 +103,21 @@ func TestAny(t *testing.T) {
 	}
 }
 
-func chain[T any](slices ...[]T) []T {
-	out := make([]T, 0)
-	for _, slice := range slices {
-		out = append(out, slice...)
-	}
-	return out
+type M struct {
+	Pub     int
+	private int
+}
+
+var _ validol.Validatable = M{}
+var _ validol.Validatable = &M{}
+
+func (m M) Validate() error {
+	return validol.Visit(m)
+}
+
+func TestVisit(t *testing.T) {
+	m := &M{Pub: 0, private: 1}
+	assert.NoError(t, validol.Visit(*m))
+	assert.NoError(t, validol.Visit(m))
+	assert.NoError(t, validol.Visit(&m))
 }

@@ -1,18 +1,11 @@
-# validol
-Validation library for golang
+package validol_test
 
-## Install
-```sh
-go get github.com/cospectrum/validol@latest
-```
-
-## Usage
-
-```go
 import (
 	"errors"
+	"testing"
 
 	"github.com/cospectrum/validol"
+	"github.com/stretchr/testify/assert"
 )
 
 type Sex string
@@ -41,10 +34,16 @@ func (i Info) Validate() error {
 	return validol.Visit(i)
 }
 
-func main() {
+func run() {
 	var i Info
 	if err := i.Validate(); err != nil {
 		panic(err)
 	}
 }
-```
+
+func TestReadme(t *testing.T) {
+	defer func() {
+		assert.NotNil(t, recover())
+	}()
+	run()
+}
