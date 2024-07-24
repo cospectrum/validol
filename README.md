@@ -76,7 +76,7 @@ Functions that create a `Validator[T]`.
 | - | - | - | - |
 | All | ...Validator[T] | Validator[T] | Logical and |
 | Any | ...Validator[T] | Validator[T] | Logical or |
-| Not | ...Validator[T] | Validator[T] | Logical not |
+| Not | Validator[T] | Validator[T] | Logical not |
 | OneOf | ...T | Validator[T] | Checks that the value is equal to one of the arguments | 
 | Eq | T comparable | Validator[T] | == |
 | Ne | T comparable | Validator[T] | != |
@@ -84,6 +84,6 @@ Functions that create a `Validator[T]`.
 | Gte | T cmp.Ordered | Validator[T] | >= |
 | Lt | T cmp.Ordered | Validator[T] | < |
 | Lte | T cmp.Ordered | Validator[T] | <= |
-| Len | Validator[int] | Validator[T] | Checks that the len passes the specified Validator[int] |
+| Len | Validator[int] | Validator[T] | Checks that the `len` passes the specified `Validator[int]` |
 | StartsWith | `prefix string` | Validator[string] | Checks if the string starts with the specified prefix |
 | EndsWith | `suffix string` | Validator[string] | Checks whether the string ends with the specified suffix |
