@@ -74,8 +74,8 @@ Functions that create a `Validator[T]`.
 
 | Name | Input | Output | Description |
 | - | - | - | - |
-| All | ...Validator[T] | Validator[T] | Logical and |
-| Any | ...Validator[T] | Validator[T] | Logical or |
+| All | ...Validator[T] | Validator[T] | Checks whether `all` validations have been completed successfully |
+| Any | ...Validator[T] | Validator[T] | Checks that `at least one` validation has been completed successfully |
 | Not | Validator[T] | Validator[T] | Logical not |
 | OneOf | ...T | Validator[T] | Checks that the value is equal to one of the arguments | 
 | Eq | T comparable | Validator[T] | == |
