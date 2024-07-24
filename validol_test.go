@@ -121,3 +121,64 @@ func TestVisit(t *testing.T) {
 	assert.NoError(t, validol.Visit(m))
 	assert.NoError(t, validol.Visit(&m))
 }
+
+func TestGt(t *testing.T) {
+	gt3 := validol.Gt(3)
+	assert.NoError(t, gt3(4))
+	assert.Error(t, gt3(3))
+	assert.Error(t, gt3(2))
+}
+
+func TestGte(t *testing.T) {
+	gte3 := validol.Gte(3)
+	assert.NoError(t, gte3(4))
+	assert.NoError(t, gte3(3))
+	assert.Error(t, gte3(2))
+}
+
+func TestLt(t *testing.T) {
+	lt3 := validol.Lt(3)
+	assert.Error(t, lt3(4))
+	assert.Error(t, lt3(3))
+	assert.NoError(t, lt3(2))
+}
+
+func TestLte(t *testing.T) {
+	lte3 := validol.Lte(3)
+	assert.Error(t, lte3(4))
+	assert.NoError(t, lte3(3))
+	assert.NoError(t, lte3(2))
+}
+
+func TestEq(t *testing.T) {
+	eq3 := validol.Eq(3)
+	assert.Error(t, eq3(4))
+	assert.NoError(t, eq3(3))
+	assert.Error(t, eq3(2))
+}
+
+func TestNe(t *testing.T) {
+	ne3 := validol.Ne(3)
+	assert.NoError(t, ne3(4))
+	assert.Error(t, ne3(3))
+	assert.NoError(t, ne3(2))
+}
+
+func TestNot(t *testing.T) {
+	ne3 := validol.Ne(3)
+	eq3 := validol.Not(ne3)
+	assert.NoError(t, eq3(3))
+	assert.Error(t, eq3(2))
+}
+
+func TestLen(t *testing.T) {
+	lenLte3 := validol.Len[string](validol.Lte(3))
+
+	assert.Error(t, lenLte3("12345"))
+	assert.Error(t, lenLte3("1234"))
+
+	assert.NoError(t, lenLte3("123"))
+	assert.NoError(t, lenLte3("12"))
+	assert.NoError(t, lenLte3("1"))
+	assert.NoError(t, lenLte3(""))
+}

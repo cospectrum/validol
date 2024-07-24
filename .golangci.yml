@@ -92,6 +92,7 @@ linters-settings:
       - performance
       - style
     disabled-checks:
+      - whyNoLint
       - commentFormatting
       - commentedOutImport
       - commentedOutCode

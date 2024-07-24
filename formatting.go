@@ -5,6 +5,21 @@ import (
 	"strings"
 )
 
+//nolint:errname // struct is private
+type failedExpr struct {
+	expr string
+}
+
+var _ error = &failedExpr{}
+
+func (e failedExpr) Error() string {
+	return fmt.Sprintf("%s failed", e.expr)
+}
+
+func failed(expr string) error {
+	return failedExpr{expr: expr}
+}
+
 func fmtVarargs[T any](elems []T) string {
 	toStr := func(el T) string {
 		return fmt.Sprintf("%+v", el)

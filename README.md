@@ -11,7 +11,6 @@ go get github.com/cospectrum/validol@latest
 ```go
 import (
 	"errors"
-
 	"github.com/cospectrum/validol"
 )
 
@@ -25,7 +24,11 @@ func (s Sex) Validate() error {
 type Email string
 
 func (e Email) Validate() error {
-	return validol.Email(string(e))
+	validate := validol.All(
+		validol.Email,
+		validol.Len[string](validol.Lte(100)),
+	)
+	return validate(string(e))
 }
 
 type Info struct {
