@@ -29,3 +29,17 @@ func All[T any](validators ...Validator[T]) Validator[T] {
 		return nil
 	}
 }
+
+func Any[T any](validators ...Validator[T]) Validator[T] {
+	return func(t T) error {
+		var lastErr error
+		for _, f := range validators {
+			if err := f(t); err != nil {
+				lastErr = err
+				continue
+			}
+			return nil
+		}
+		return lastErr
+	}
+}
