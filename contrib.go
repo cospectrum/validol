@@ -9,7 +9,7 @@ var _ Validator[string] = Email
 func Email(s string) error {
 	ok := emailRegex().MatchString(s)
 	if !ok {
-		return fmt.Errorf("validol.Email(%s) failed", s)
+		return failed(fmt.Sprintf("validol.Email(%s)", s))
 	}
 	return nil
 }
