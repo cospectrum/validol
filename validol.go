@@ -11,10 +11,10 @@ type Validatable interface {
 func OneOf[T comparable](vals ...T) Validator[T] {
 	return func(t T) error {
 		for _, val := range vals {
-			if val != t {
-				return fmt.Errorf("%+v != %+v", val, t)
+			if val == t {
+				return nil
 			}
 		}
-		return nil
+		return fmt.Errorf("validol.OneOf(%s)(%+v) failed", fmtVarargs(vals), t)
 	}
 }
