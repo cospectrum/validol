@@ -13,3 +13,11 @@ func Email(s string) error {
 	}
 	return nil
 }
+
+func UUID4(s string) error {
+	ok := uuid4Regex().MatchString(s)
+	if !ok {
+		return failed(fmt.Sprintf("validol.UUID4(%s)", s))
+	}
+	return nil
+}

@@ -1,10 +1,21 @@
 # validol
-Validation library for golang
+[![github]](https://github.com/cospectrum/validol)
+
+[github]: https://img.shields.io/badge/github-cospectrum/validol-8da0cb?logo=github
+
+Validation library for golang.
+
+## Content
+- [Install](#install)
+- [Usage](#usage)
+- [Validators](#validators)
+- [Combinators](#combinators)
 
 ## Install
 ```sh
 go get github.com/cospectrum/validol@latest
 ```
+Requires Go version `1.22.0` or greater.
 
 ## Usage
 ```go
@@ -48,3 +59,29 @@ func main() {
 	}
 }
 ```
+
+## Validators
+Type `validol.Validator[T]` is equivalent to `func(T) error`.
+
+| Name | Input | Description | 
+| - | - | - |
+| Walk | any | Recursively checks all "descendants" that have the `Validate() error` method |
+| Email | string | Email string |
+| UUID4 | string | Universally Unique Identifier UUID v4 |
+
+## Combinators
+Functions that create a `Validator[T]`.
+
+| Name | Input | Output | Description |
+| - | - | - | - |
+| All | ...Validator[T] | Validator[T] | Logical and |
+| Any | ...Validator[T] | Validator[T] | Logical or |
+| Not | ...Validator[T] | Validator[T] | Logical not |
+| OneOf | ...T | Validator[T] | Checks that the value is equal to one of the arguments | 
+| Eq | T comparable | Validator[T] | == |
+| Ne | T comparable | Validator[T] | != |
+| Gt | T cmp.Ordered | Validator[T] | > |
+| Gte | T cmp.Ordered | Validator[T] | >= |
+| Lt | T cmp.Ordered | Validator[T] | < |
+| Lte | T cmp.Ordered | Validator[T] | <= |
+| Len | Validator[int] | Validator[T] | Checks that the length is valid |
