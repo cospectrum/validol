@@ -18,7 +18,7 @@ type wrapper[T any] struct {
 }
 
 func (w wrapper[T]) Validate() error {
-	return validol.Visit(w)
+	return validol.Walk(w)
 }
 
 func wrap[T any](val T) wrapper[T] {

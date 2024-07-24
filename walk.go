@@ -2,15 +2,15 @@ package validol
 
 import "reflect"
 
-func visitChildren(in any) error {
-	return innerVisit(in, false)
+func walkDescendants(in any) error {
+	return validationWalk(in, false)
 }
 
-func visit(in any) error {
-	return innerVisit(in, true)
+func walk(in any) error {
+	return validationWalk(in, true)
 }
 
-func innerVisit(in any, validateItself bool) error {
+func validationWalk(in any, validateItself bool) error {
 	val, ok := in.(reflect.Value)
 	if !ok {
 		val = reflect.ValueOf(in)
@@ -23,11 +23,11 @@ func innerVisit(in any, validateItself bool) error {
 
 	switch val.Kind() {
 	case reflect.Pointer:
-		return visit(val.Elem())
+		return walk(val.Elem())
 	case reflect.Array, reflect.Slice:
 		for i := 0; i < val.Len(); i++ {
 			item := val.Index(i)
-			if err := visit(item); err != nil {
+			if err := walk(item); err != nil {
 				return err
 			}
 		}
@@ -35,10 +35,10 @@ func innerVisit(in any, validateItself bool) error {
 	case reflect.Map:
 		it := val.MapRange()
 		for it.Next() {
-			if err := visit(it.Key()); err != nil {
+			if err := walk(it.Key()); err != nil {
 				return err
 			}
-			if err := visit(it.Value()); err != nil {
+			if err := walk(it.Value()); err != nil {
 				return err
 			}
 		}
@@ -46,7 +46,7 @@ func innerVisit(in any, validateItself bool) error {
 	case reflect.Struct:
 		for i := 0; i < val.NumField(); i++ {
 			field := val.Field(i)
-			if err := visit(field); err != nil {
+			if err := walk(field); err != nil {
 				return err
 			}
 		}
