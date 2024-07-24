@@ -5,11 +5,17 @@
 
 Validation library for golang.
 
+## Content
+- [Install](#install)
+- [Usage](#usage)
+- [Validators](#validators)
+- [Combinators](#combinators)
+
 ## Install
 ```sh
 go get github.com/cospectrum/validol@latest
 ```
-Requires Go version 1.22.0 or greater.
+Requires Go version `1.22.0` or greater.
 
 ## Usage
 ```go
