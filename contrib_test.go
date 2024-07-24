@@ -3,7 +3,6 @@ package validol_test
 import (
 	"testing"
 
-	"github.com/cospectrum/validol"
 	vd "github.com/cospectrum/validol"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,7 +20,7 @@ func wrap[T any](val T) wrapper[T] {
 type email string
 
 func (e email) Validate() error {
-	return validol.Email(string(e))
+	return vd.Email(string(e))
 }
 
 func TestEmail(t *testing.T) {
