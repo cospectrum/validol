@@ -182,3 +182,24 @@ func TestLen(t *testing.T) {
 	assert.NoError(t, lenLte3("1"))
 	assert.NoError(t, lenLte3(""))
 }
+
+func TestStartsWith(t *testing.T) {
+	assert.NoError(t, validol.StartsWith("")(""))
+	assert.NoError(t, validol.StartsWith("")("1"))
+	assert.NoError(t, validol.StartsWith("1")("1"))
+	assert.NoError(t, validol.StartsWith("1")("1a"))
+
+	assert.Error(t, validol.StartsWith("1")(""))
+	assert.Error(t, validol.StartsWith("1a")("1"))
+}
+
+func TestEndsWith(t *testing.T) {
+	assert.NoError(t, validol.EndsWith("")(""))
+	assert.NoError(t, validol.EndsWith("")("1"))
+	assert.NoError(t, validol.EndsWith("1")("1"))
+	assert.NoError(t, validol.EndsWith("a")("1a"))
+	assert.NoError(t, validol.EndsWith("1a")("1a"))
+
+	assert.Error(t, validol.EndsWith("1")(""))
+	assert.Error(t, validol.EndsWith("1a")("1"))
+}
