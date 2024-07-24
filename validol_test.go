@@ -8,8 +8,6 @@ import (
 )
 
 func TestOneOf(t *testing.T) {
-	assert := assert.New(t)
-
-	assert.NoError(validol.OneOf(2, 1, 3)(1))
-	assert.Error(validol.OneOf(2, 3)(1))
+	assert.NoError(t, validol.OneOf(2, 1, 3)(1))
+	assert.Error(t, validol.OneOf(2, 3)(1))
 }
