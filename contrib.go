@@ -7,9 +7,6 @@ import (
 var _ Validator[string] = Email
 
 func Email(s string) error {
-	if len(s) == 0 {
-		return failed(fmt.Sprintf("validol.Email(%s)", s))
-	}
 	ok := emailRegex().MatchString(s)
 	if !ok {
 		return failed(fmt.Sprintf("validol.Email(%s)", s))
