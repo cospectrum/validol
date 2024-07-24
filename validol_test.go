@@ -2,8 +2,8 @@ package validol_test
 
 import (
 	"testing"
-	"validol"
 
+	"github.com/cospectrum/validol"
 	"github.com/stretchr/testify/assert"
 )
 
