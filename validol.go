@@ -3,6 +3,7 @@ package validol
 import (
 	"cmp"
 	"fmt"
+	"strings"
 )
 
 type Validator[Of any] func(Of) error
@@ -127,5 +128,23 @@ func Len[T any](validateLen Validator[int]) Validator[T] {
 			return err
 		}
 		return nil
+	}
+}
+
+func StartsWith(prefix string) Validator[string] {
+	return func(s string) error {
+		if strings.HasPrefix(s, prefix) {
+			return nil
+		}
+		return failed(fmt.Sprintf("validol.StartsWith(%s)(%s)", prefix, s))
+	}
+}
+
+func EndsWith(suffix string) Validator[string] {
+	return func(s string) error {
+		if strings.HasSuffix(s, suffix) {
+			return nil
+		}
+		return failed(fmt.Sprintf("validol.EndsWith(%s)(%s)", suffix, s))
 	}
 }
