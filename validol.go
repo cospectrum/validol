@@ -18,3 +18,14 @@ func OneOf[T comparable](vals ...T) Validator[T] {
 		return fmt.Errorf("validol.OneOf(%s)(%+v) failed", fmtVarargs(vals), t)
 	}
 }
+
+func All[T any](validators ...Validator[T]) Validator[T] {
+	return func(t T) error {
+		for _, f := range validators {
+			if err := f(t); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
