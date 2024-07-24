@@ -9,6 +9,7 @@ Validation library for golang.
 ```sh
 go get github.com/cospectrum/validol@latest
 ```
+Requires Go version 1.22.0 or greater.
 
 ## Usage
 ```go
