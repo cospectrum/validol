@@ -1,4 +1,4 @@
-module validol
+module github.com/cospectrum/validol
 
 go 1.22.0
 
