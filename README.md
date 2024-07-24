@@ -77,7 +77,7 @@ Functions that create a `Validator[T]`.
 | All | ...Validator[T] | Validator[T] | Logical and |
 | Any | ...Validator[T] | Validator[T] | Logical or |
 | Not | ...Validator[T] | Validator[T] | Logical not |
-| OneOf[T comparable] | ...T | Validator[T] | Checks that the value is equal to one of the arguments | 
+| OneOf | ...T | Validator[T] | Checks that the value is equal to one of the arguments | 
 | Eq | T comparable | Validator[T] | == |
 | Ne | T comparable | Validator[T] | != |
 | Gt | T cmp.Ordered | Validator[T] | > |
