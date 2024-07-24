@@ -116,7 +116,7 @@ func (m M) Validate() error {
 }
 
 func TestVisit(t *testing.T) {
-	m := &M{}
+	m := &M{Pub: 0, private: 1}
 	assert.NoError(t, validol.Visit(*m))
 	assert.NoError(t, validol.Visit(m))
 	assert.NoError(t, validol.Visit(&m))

@@ -30,8 +30,8 @@ func innerVisit(in any, validateItself bool) error {
 			if err := visit(item); err != nil {
 				return err
 			}
-			return nil
 		}
+		return nil
 	case reflect.Map:
 		it := val.MapRange()
 		for it.Next() {
@@ -54,5 +54,4 @@ func innerVisit(in any, validateItself bool) error {
 	default:
 		return nil
 	}
-	return nil
 }
