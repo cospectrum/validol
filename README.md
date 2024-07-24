@@ -10,22 +10,21 @@ go get github.com/cospectrum/validol@latest
 ```go
 import (
 	"errors"
-	"github.com/cospectrum/validol"
+	vd "github.com/cospectrum/validol"
 )
 
 type Sex string
 
 func (s Sex) Validate() error {
-	return validol.OneOf[Sex]("male", "female", "other")(s)
+	return vd.OneOf[Sex]("male", "female", "other")(s)
 }
 
 type Email string
 
 func (e Email) Validate() error {
-	bound := validol.All(validol.Gt(5), validol.Lte(100))
-	return validol.All(
-		validol.Len[string](bound),
-		validol.Email,
+	return vd.All(
+		vd.Len[string](vd.All(vd.Gt(5), vd.Lte(100))),
+		vd.Email,
 	)(string(e))
 }
 
@@ -37,8 +36,8 @@ type Info struct {
 
 func (info Info) Validate() error {
 	return errors.Join(
-		validol.Walk(info),
-		validol.Gte(uint(18))(info.age),
+		vd.Walk(info),
+		vd.Gte(uint(18))(info.age),
 	)
 }
 
