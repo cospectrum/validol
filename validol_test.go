@@ -144,7 +144,7 @@ func TestWalk(t *testing.T) {
 	assert.Error(t, validol.Walk(invalidM))
 	assert.Error(t, validol.Walk(&invalidM))
 
-	var nilM *M = nil
+	var nilM *M
 	assert.NoError(t, validol.Walk(nilM))
 }
 

@@ -11,10 +11,7 @@ func walk(in any) error {
 }
 
 func validationWalk(in any, validateItself bool) error {
-	val, ok := in.(reflect.Value)
-	if !ok {
-		val = reflect.ValueOf(in)
-	}
+	val := toReflectValue(in)
 	if isNil(val) {
 		return nil
 	}
