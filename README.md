@@ -1,7 +1,9 @@
 # validol
 [![github]](https://github.com/cospectrum/validol)
+[![goref]](https://pkg.go.dev/github.com/cospectrum/validol)
 
 [github]: https://img.shields.io/badge/github-cospectrum/validol-8da0cb?logo=github
+[goref]: https://pkg.go.dev/badge/github.com/cospectrum/validol
 
 Validation library for golang.
 
