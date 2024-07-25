@@ -210,6 +210,16 @@ func TestLen(t *testing.T) {
 	assert.NoError(t, lenLte3("12"))
 	assert.NoError(t, lenLte3("1"))
 	assert.NoError(t, lenLte3(""))
+
+	dynLenLte3 := validol.Len[any](validol.Lte(3))
+
+	assert.Error(t, dynLenLte3("12345"))
+	assert.Error(t, dynLenLte3([]int{1, 2, 3, 4, 5}))
+
+	assert.NoError(t, dynLenLte3("123"))
+	assert.NoError(t, dynLenLte3([]int{1, 2, 3}))
+	assert.NoError(t, dynLenLte3("12"))
+	assert.NoError(t, dynLenLte3([]int{1, 2}))
 }
 
 func TestStartsWith(t *testing.T) {
@@ -278,6 +288,11 @@ func TestNil(t *testing.T) {
 	assert.NoError(t, validol.Nil(dyn))
 	assert.NoError(t, Nil(dyn))
 	dyn = ""
+	assert.True(t, dyn != nil)
+	assert.Error(t, validol.Nil(dyn))
+	assert.Error(t, Nil(dyn))
+	dyn = M{}
+	assert.True(t, dyn != nil)
 	assert.Error(t, validol.Nil(dyn))
 	assert.Error(t, Nil(dyn))
 
