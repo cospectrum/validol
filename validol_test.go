@@ -203,3 +203,14 @@ func TestEndsWith(t *testing.T) {
 	assert.Error(t, validol.EndsWith("1")(""))
 	assert.Error(t, validol.EndsWith("1a")("1"))
 }
+
+func TestContains(t *testing.T) {
+	assert.NoError(t, validol.Contains("")(""))
+	assert.NoError(t, validol.Contains("")("1"))
+	assert.NoError(t, validol.Contains("1")("1"))
+	assert.NoError(t, validol.Contains("a")("1a"))
+	assert.NoError(t, validol.Contains("2")("12a"))
+
+	assert.Error(t, validol.Contains("1")(""))
+	assert.Error(t, validol.Contains("1a")("1"))
+}
