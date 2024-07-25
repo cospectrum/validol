@@ -14,6 +14,8 @@ func Email(s string) error {
 	return nil
 }
 
+var _ Validator[string] = UUID4
+
 func UUID4(s string) error {
 	ok := uuid4Regex().MatchString(s)
 	if !ok {
