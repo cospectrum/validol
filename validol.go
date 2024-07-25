@@ -54,8 +54,7 @@ func Walk[T any](t T) error {
 
 func Not[T any](fn Validator[T]) Validator[T] {
 	return func(t T) error {
-		err := fn(t)
-		if err != nil {
+		if err := fn(t); err != nil {
 			return nil //nolint:nilerr
 		}
 		return failed(fmt.Sprintf("validol.Not(...)(%+v)", t))
