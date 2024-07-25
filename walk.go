@@ -15,6 +15,9 @@ func validationWalk(in any, validateItself bool) error {
 	if !ok {
 		val = reflect.ValueOf(in)
 	}
+	if isNil(val) {
+		return nil
+	}
 	if validateItself && val.CanInterface() {
 		if v, ok := val.Interface().(Validatable); ok {
 			return v.Validate()
