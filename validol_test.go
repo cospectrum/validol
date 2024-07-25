@@ -111,8 +111,12 @@ func (i NonZeroInt) Validate() error {
 }
 
 type M struct {
-	Pub     NonZeroInt
-	private NonZeroInt
+	Pub         NonZeroInt
+	private     NonZeroInt
+	OptionSlice *[]int
+	OptionMap   *map[int]int
+	OptionArray *[3]int
+	OptionInt   *int
 }
 
 var _ validol.Validatable = M{}
@@ -139,6 +143,9 @@ func TestWalk(t *testing.T) {
 	assert.Error(t, validol.Walk(*invalidM))
 	assert.Error(t, validol.Walk(invalidM))
 	assert.Error(t, validol.Walk(&invalidM))
+
+	var nilM *M
+	assert.NoError(t, validol.Walk(nilM))
 }
 
 func TestGt(t *testing.T) {
