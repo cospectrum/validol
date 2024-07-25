@@ -18,7 +18,8 @@ type Email string
 
 func (e Email) Validate() error {
 	return vd.All(
-		vd.Len[string](vd.All(vd.Gt(5), vd.Lte(100))),
+		vd.Len[string](vd.Gt(5)),
+		vd.Len[string](vd.Lte(100)),
 		vd.Email,
 	)(string(e))
 }
