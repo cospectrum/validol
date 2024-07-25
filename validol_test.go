@@ -214,3 +214,12 @@ func TestContains(t *testing.T) {
 	assert.Error(t, validol.Contains("1")(""))
 	assert.Error(t, validol.Contains("1a")("1"))
 }
+
+func TestContainsRune(t *testing.T) {
+	assert.NoError(t, validol.ContainsRune('1')("1"))
+	assert.NoError(t, validol.ContainsRune('a')("1a"))
+	assert.NoError(t, validol.ContainsRune('2')("12a"))
+
+	assert.Error(t, validol.ContainsRune('1')(""))
+	assert.Error(t, validol.ContainsRune('a')("1"))
+}

@@ -136,7 +136,7 @@ func StartsWith(prefix string) Validator[string] {
 		if strings.HasPrefix(s, prefix) {
 			return nil
 		}
-		return failed(fmt.Sprintf("validol.StartsWith(%s)(%s)", prefix, s))
+		return failed(fmt.Sprintf("validol.StartsWith(%q)(%q)", prefix, s))
 	}
 }
 
@@ -145,7 +145,7 @@ func EndsWith(suffix string) Validator[string] {
 		if strings.HasSuffix(s, suffix) {
 			return nil
 		}
-		return failed(fmt.Sprintf("validol.EndsWith(%s)(%s)", suffix, s))
+		return failed(fmt.Sprintf("validol.EndsWith(%q)(%q)", suffix, s))
 	}
 }
 
@@ -154,6 +154,15 @@ func Contains(substr string) Validator[string] {
 		if strings.Contains(s, substr) {
 			return nil
 		}
-		return failed(fmt.Sprintf("validol.Contains(%s)(%s)", substr, s))
+		return failed(fmt.Sprintf("validol.Contains(%q)(%q)", substr, s))
+	}
+}
+
+func ContainsRune(r rune) Validator[string] {
+	return func(s string) error {
+		if strings.ContainsRune(s, r) {
+			return nil
+		}
+		return failed(fmt.Sprintf("validol.ContainsRune(%q)(%q)", r, s))
 	}
 }

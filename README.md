@@ -34,7 +34,8 @@ type Email string
 
 func (e Email) Validate() error {
 	return vd.All(
-		vd.Len[string](vd.All(vd.Gt(5), vd.Lte(100))),
+		vd.Len[string](vd.Gt(5)),
+		vd.Len[string](vd.Lte(100)),
 		vd.Email,
 	)(string(e))
 }
@@ -88,3 +89,4 @@ Functions that create a `Validator[T]`.
 | StartsWith | string | Validator[string] | Checks if the string starts with the specified prefix |
 | EndsWith | string | Validator[string] | Checks whether the string ends with the specified suffix |
 | Contains | string | Validator[string] | Checks whether the specified substr is within string |
+| ContainsRune | rune | Validator[string] | Checks whether the specified Unicode code point is within string |
