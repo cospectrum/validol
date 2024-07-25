@@ -65,6 +65,8 @@ func (u uuid4) Validate() error {
 	return vd.UUID4(string(u))
 }
 
+type void struct{}
+
 func mapF[T any, U any](elems []T, f func(T) U) []U {
 	out := make([]U, 0, len(elems))
 	for _, el := range elems {
@@ -84,6 +86,10 @@ func TestUUID4(t *testing.T) {
 		assert.NoError(t, u.Validate())
 		assert.NoError(t, vd.Walk(wrap(u)))
 		assert.NoError(t, vd.Walk(wrap(wrap(u))))
+		assert.NoError(t, vd.Walk(struct{ Val uuid4 }{u}))
+		assert.NoError(t, vd.Walk([]uuid4{u}))
+		assert.NoError(t, vd.Walk(map[uuid4]void{u: {}}))
+		assert.NoError(t, vd.Walk(map[void]uuid4{{}: u}))
 	}
 	assert.NoError(t, vd.Walk(mapF(valid, func(s string) uuid4 {
 		return uuid4(s)
@@ -100,6 +106,10 @@ func TestUUID4(t *testing.T) {
 		assert.Error(t, u.Validate())
 		assert.Error(t, vd.Walk(wrap(u)))
 		assert.Error(t, vd.Walk(wrap(wrap(u))))
+		assert.Error(t, vd.Walk(struct{ Val uuid4 }{u}))
+		assert.Error(t, vd.Walk([]uuid4{u}))
+		assert.Error(t, vd.Walk(map[uuid4]void{u: {}}))
+		assert.Error(t, vd.Walk(map[void]uuid4{{}: u}))
 	}
 	assert.Error(t, vd.Walk(mapF(invalid, func(s string) uuid4 {
 		return uuid4(s)

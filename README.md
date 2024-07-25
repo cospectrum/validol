@@ -1,7 +1,9 @@
 # validol
 [![github]](https://github.com/cospectrum/validol)
+[![goref]](https://pkg.go.dev/github.com/cospectrum/validol)
 
 [github]: https://img.shields.io/badge/github-cospectrum/validol-8da0cb?logo=github
+[goref]: https://pkg.go.dev/badge/github.com/cospectrum/validol
 
 Validation library for golang.
 
@@ -13,7 +15,7 @@ Validation library for golang.
 
 ## Install
 ```sh
-go get github.com/cospectrum/validol@latest
+go get -u github.com/cospectrum/validol
 ```
 Requires Go version `1.22.0` or greater.
 
@@ -66,7 +68,7 @@ Type `validol.Validator[T]` is equivalent to `func(T) error`.
 
 | Name | Input | Description | 
 | - | - | - |
-| Walk | any | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are struct fields, slice/array elements, map keys/values |
+| Walk | any | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are public struct fields, slice/array elements, map keys/values |
 | Email | string | Email string |
 | UUID4 | string | Universally Unique Identifier UUID v4 |
 
