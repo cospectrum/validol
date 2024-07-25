@@ -65,6 +65,14 @@ func (u uuid4) Validate() error {
 	return vd.UUID4(string(u))
 }
 
+func mapF[T any, U any](elems []T, f func(T) U) []U {
+	out := make([]U, 0, len(elems))
+	for _, el := range elems {
+		out = append(out, f(el))
+	}
+	return out
+}
+
 func TestUUID4(t *testing.T) {
 	valid := []string{
 		"57b73598-8764-4ad0-a76a-679bb6640eb1",
@@ -77,6 +85,9 @@ func TestUUID4(t *testing.T) {
 		assert.NoError(t, vd.Walk(wrap(u)))
 		assert.NoError(t, vd.Walk(wrap(wrap(u))))
 	}
+	assert.NoError(t, vd.Walk(mapF(valid, func(s string) uuid4 {
+		return uuid4(s)
+	})))
 	invalid := []string{
 		"",
 		"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3",
@@ -90,4 +101,7 @@ func TestUUID4(t *testing.T) {
 		assert.Error(t, vd.Walk(wrap(u)))
 		assert.Error(t, vd.Walk(wrap(wrap(u))))
 	}
+	assert.Error(t, vd.Walk(mapF(invalid, func(s string) uuid4 {
+		return uuid4(s)
+	})))
 }
