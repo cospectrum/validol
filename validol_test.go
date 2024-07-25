@@ -277,6 +277,9 @@ func TestNil(t *testing.T) {
 	assert.True(t, dyn == nil)
 	assert.NoError(t, validol.Nil(dyn))
 	assert.NoError(t, Nil(dyn))
+	dyn = ""
+	assert.Error(t, validol.Nil(dyn))
+	assert.Error(t, Nil(dyn))
 
 	assert.Error(t, validol.Nil(int(0)))
 	assert.Error(t, validol.Nil(""))
@@ -304,7 +307,6 @@ func TestNotNil(t *testing.T) {
 	assert.Error(t, notNil(i))
 
 	var dyn interface{}
-	assert.True(t, dyn == nil)
 	assert.Error(t, validol.NotNil(dyn))
 	assert.Error(t, notNil(dyn))
 
@@ -342,6 +344,12 @@ func TestEmpty(t *testing.T) {
 	var dyn interface{}
 	assert.NoError(t, validol.Empty(dyn))
 	assert.NoError(t, empty(dyn))
+	dyn = ""
+	assert.Error(t, validol.Empty(dyn))
+	assert.Error(t, empty(dyn))
+	dyn = M{}
+	assert.Error(t, validol.Empty(dyn))
+	assert.Error(t, empty(dyn))
 
 	var model M
 	assert.NoError(t, validol.Empty(model))
@@ -356,10 +364,16 @@ func TestRequired(t *testing.T) {
 	var m map[int]int
 	assert.Error(t, validol.Required(m))
 	assert.Error(t, required(m))
+	m = map[int]int{}
+	assert.NoError(t, validol.Required(m))
+	assert.NoError(t, required(m))
 
 	var slice []int
 	assert.Error(t, validol.Required(slice))
 	assert.Error(t, required(slice))
+	slice = []int{}
+	assert.NoError(t, validol.Required(slice))
+	assert.NoError(t, required(slice))
 
 	var i int
 	assert.Error(t, validol.Required(i))
@@ -374,8 +388,17 @@ func TestRequired(t *testing.T) {
 	assert.Error(t, required(s))
 
 	var dyn interface{}
+	assert.True(t, dyn == nil)
 	assert.Error(t, validol.Required(dyn))
 	assert.Error(t, required(dyn))
+	dyn = ""
+	assert.True(t, dyn != nil)
+	assert.NoError(t, validol.Required(dyn))
+	assert.NoError(t, required(dyn))
+	dyn = M{}
+	assert.True(t, dyn != nil)
+	assert.NoError(t, validol.Required(dyn))
+	assert.NoError(t, required(dyn))
 
 	var model M
 	assert.Error(t, validol.Required(model))

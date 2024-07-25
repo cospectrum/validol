@@ -2,16 +2,15 @@ package validol
 
 import "reflect"
 
-func toReflectValue(t any) reflect.Value {
-	val, ok := t.(reflect.Value)
-	if !ok {
-		val = reflect.ValueOf(t)
+func toReflectValue[T any](t T) reflect.Value {
+	if val, ok := any(t).(reflect.Value); ok {
+		return val
 	}
-	return val
+	return reflect.ValueOf(&t).Elem()
 }
 
 func lenOf[T any](t T) int {
-	return toReflectValue(t).Len()
+	return reflect.ValueOf(t).Len()
 }
 
 func isNil[T any](t T) bool {
@@ -19,17 +18,20 @@ func isNil[T any](t T) bool {
 	switch val.Kind() {
 	case reflect.Invalid:
 		return true
-	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice, reflect.UnsafePointer:
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map,
+		reflect.Pointer, reflect.Slice, reflect.UnsafePointer:
 		return val.IsNil()
 	default:
 		return false
 	}
 }
 
-func isZero[T any](t T) bool {
+func isEmpty[T any](t T) bool {
 	val := toReflectValue(t)
-	if val.Kind() == reflect.Invalid {
+	switch val.Kind() {
+	case reflect.Invalid:
 		return true
+	default:
+		return val.IsZero()
 	}
-	return val.IsZero()
 }

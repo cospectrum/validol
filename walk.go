@@ -2,15 +2,15 @@ package validol
 
 import "reflect"
 
-func walkDescendants(in any) error {
+func walkDescendants[T any](in T) error {
 	return validationWalk(in, false)
 }
 
-func walk(in any) error {
+func walk[T any](in T) error {
 	return validationWalk(in, true)
 }
 
-func validationWalk(in any, validateItself bool) error {
+func validationWalk[T any](in T, validateItself bool) error {
 	val := toReflectValue(in)
 	if isNil(val) {
 		return nil

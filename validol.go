@@ -74,7 +74,7 @@ func NotNil[T any](t T) error {
 var _ Validator[any] = Empty
 
 func Empty[T any](t T) error {
-	if isZero(t) {
+	if isEmpty(t) {
 		return nil
 	}
 	return failed(fmt.Sprintf("validol.Empty(%+v)", t))
@@ -83,8 +83,8 @@ func Empty[T any](t T) error {
 var _ Validator[any] = Required
 
 func Required[T any](t T) error {
-	notZero := !isZero(t)
-	if notZero {
+	notEmpty := !isEmpty(t)
+	if notEmpty {
 		return nil
 	}
 	return failed(fmt.Sprintf("validol.Required(%+v)", t))
