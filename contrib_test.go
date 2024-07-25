@@ -94,6 +94,10 @@ func TestUUID4(t *testing.T) {
 	assert.NoError(t, vd.Walk(mapF(valid, func(s string) uuid4 {
 		return uuid4(s)
 	})))
+	assert.NoError(t, vd.Walk(mapF(valid, func(s string) *uuid4 {
+		u := uuid4(s)
+		return &u
+	})))
 	invalid := []string{
 		"",
 		"xxxa987fbc9-4bed-3078-cf07-9141ba07c9f3",
@@ -113,5 +117,9 @@ func TestUUID4(t *testing.T) {
 	}
 	assert.Error(t, vd.Walk(mapF(invalid, func(s string) uuid4 {
 		return uuid4(s)
+	})))
+	assert.Error(t, vd.Walk(mapF(invalid, func(s string) *uuid4 {
+		u := uuid4(s)
+		return &u
 	})))
 }
