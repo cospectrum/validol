@@ -148,3 +148,12 @@ func EndsWith(suffix string) Validator[string] {
 		return failed(fmt.Sprintf("validol.EndsWith(%s)(%s)", suffix, s))
 	}
 }
+
+func Contains(substr string) Validator[string] {
+	return func(s string) error {
+		if strings.Contains(s, substr) {
+			return nil
+		}
+		return failed(fmt.Sprintf("validol.Contains(%s)(%s)", substr, s))
+	}
+}
