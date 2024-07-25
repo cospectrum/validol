@@ -23,7 +23,7 @@ func validationWalk(in any, validateItself bool) error {
 
 	switch val.Kind() {
 	case reflect.Pointer:
-		return walk(val.Elem())
+		return validationWalk(val.Elem(), validateItself)
 	case reflect.Array, reflect.Slice:
 		for i := 0; i < val.Len(); i++ {
 			item := val.Index(i)

@@ -1,6 +1,7 @@
 package validol_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/cospectrum/validol"
@@ -103,23 +104,41 @@ func TestAny(t *testing.T) {
 	}
 }
 
+type NonZeroInt int
+
+func (i NonZeroInt) Validate() error {
+	return validol.Ne(0)(int(i))
+}
+
 type M struct {
-	Pub     int
-	private int
+	Pub     NonZeroInt
+	private NonZeroInt
 }
 
 var _ validol.Validatable = M{}
 var _ validol.Validatable = &M{}
 
 func (m M) Validate() error {
-	return validol.Walk(m)
+	mPtr := &m
+	// 1. The type is not a descendant of itself.
+	// 2. Ptrs to itself are not descendants.
+	return errors.Join(
+		validol.Walk(m),
+		validol.Walk(&m),
+		validol.Walk(&mPtr),
+	)
 }
 
-func TestWalf(t *testing.T) {
-	m := &M{Pub: 0, private: 1}
-	assert.NoError(t, validol.Walk(*m))
-	assert.NoError(t, validol.Walk(m))
-	assert.NoError(t, validol.Walk(&m))
+func TestWalk(t *testing.T) {
+	validM := &M{Pub: 1, private: 0}
+	assert.NoError(t, validol.Walk(*validM))
+	assert.NoError(t, validol.Walk(validM))
+	assert.NoError(t, validol.Walk(&validM))
+
+	invalidM := &M{Pub: 0, private: 1}
+	assert.Error(t, validol.Walk(*invalidM))
+	assert.Error(t, validol.Walk(invalidM))
+	assert.Error(t, validol.Walk(&invalidM))
 }
 
 func TestGt(t *testing.T) {
