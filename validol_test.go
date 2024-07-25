@@ -288,11 +288,9 @@ func TestNil(t *testing.T) {
 	assert.NoError(t, validol.Nil(dyn))
 	assert.NoError(t, Nil(dyn))
 	dyn = ""
-	assert.True(t, dyn != nil)
 	assert.Error(t, validol.Nil(dyn))
 	assert.Error(t, Nil(dyn))
 	dyn = M{}
-	assert.True(t, dyn != nil)
 	assert.Error(t, validol.Nil(dyn))
 	assert.Error(t, Nil(dyn))
 
@@ -407,11 +405,9 @@ func TestRequired(t *testing.T) {
 	assert.Error(t, validol.Required(dyn))
 	assert.Error(t, required(dyn))
 	dyn = ""
-	assert.True(t, dyn != nil)
 	assert.NoError(t, validol.Required(dyn))
 	assert.NoError(t, required(dyn))
 	dyn = M{}
-	assert.True(t, dyn != nil)
 	assert.NoError(t, validol.Required(dyn))
 	assert.NoError(t, required(dyn))
 
