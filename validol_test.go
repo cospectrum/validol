@@ -146,6 +146,9 @@ func TestWalk(t *testing.T) {
 
 	var nilM *M
 	assert.NoError(t, validol.Walk(nilM))
+
+	var dyn interface{}
+	assert.NoError(t, validol.Walk(dyn))
 }
 
 func TestGt(t *testing.T) {
@@ -207,6 +210,16 @@ func TestLen(t *testing.T) {
 	assert.NoError(t, lenLte3("12"))
 	assert.NoError(t, lenLte3("1"))
 	assert.NoError(t, lenLte3(""))
+
+	dynLenLte3 := validol.Len[any](validol.Lte(3))
+
+	assert.Error(t, dynLenLte3("12345"))
+	assert.Error(t, dynLenLte3([]int{1, 2, 3, 4, 5}))
+
+	assert.NoError(t, dynLenLte3("123"))
+	assert.NoError(t, dynLenLte3([]int{1, 2, 3}))
+	assert.NoError(t, dynLenLte3("12"))
+	assert.NoError(t, dynLenLte3([]int{1, 2}))
 }
 
 func TestStartsWith(t *testing.T) {
@@ -248,4 +261,157 @@ func TestContainsRune(t *testing.T) {
 
 	assert.Error(t, validol.ContainsRune('1')(""))
 	assert.Error(t, validol.ContainsRune('a')("1"))
+}
+
+func Nil[T any](t T) error {
+	return validol.Not[T](validol.NotNil)(t)
+}
+
+func TestNil(t *testing.T) {
+	var m map[int]int
+	assert.True(t, m == nil)
+	assert.NoError(t, validol.Nil(m))
+	assert.NoError(t, Nil(m))
+
+	var slice []int
+	assert.True(t, slice == nil)
+	assert.NoError(t, validol.Nil(slice))
+	assert.NoError(t, Nil(slice))
+
+	var i *int
+	assert.True(t, i == nil)
+	assert.NoError(t, validol.Nil(i))
+	assert.NoError(t, Nil(i))
+
+	var dyn interface{}
+	assert.True(t, dyn == nil)
+	assert.NoError(t, validol.Nil(dyn))
+	assert.NoError(t, Nil(dyn))
+	dyn = ""
+	assert.Error(t, validol.Nil(dyn))
+	assert.Error(t, Nil(dyn))
+	dyn = M{}
+	assert.Error(t, validol.Nil(dyn))
+	assert.Error(t, Nil(dyn))
+
+	assert.Error(t, validol.Nil(int(0)))
+	assert.Error(t, validol.Nil(""))
+	assert.Error(t, validol.Nil([]int{}))
+	assert.Error(t, validol.Nil(map[int]int{}))
+}
+
+func notNil[T any](t T) error {
+	return validol.Not[T](validol.Nil)(t)
+}
+
+func TestNotNil(t *testing.T) {
+	var m map[int]int
+	assert.Error(t, validol.NotNil(m))
+	assert.Error(t, notNil(m))
+	assert.NoError(t, validol.NotNil(map[int]int{}))
+
+	var slice []int
+	assert.Error(t, validol.NotNil(slice))
+	assert.Error(t, notNil(slice))
+	assert.NoError(t, validol.NotNil(map[int]int{}))
+
+	var i *int
+	assert.Error(t, validol.NotNil(i))
+	assert.Error(t, notNil(i))
+
+	var dyn interface{}
+	assert.Error(t, validol.NotNil(dyn))
+	assert.Error(t, notNil(dyn))
+
+	assert.NoError(t, validol.NotNil(int(0)))
+	assert.NoError(t, validol.NotNil(""))
+	assert.NoError(t, validol.NotNil([]int{}))
+	assert.NoError(t, validol.NotNil(map[int]int{}))
+}
+
+func empty[T any](t T) error {
+	return validol.Not[T](validol.Required)(t)
+}
+
+func TestEmpty(t *testing.T) {
+	var m map[int]int
+	assert.NoError(t, validol.Empty(m))
+	assert.NoError(t, empty(m))
+
+	var slice []int
+	assert.NoError(t, validol.Empty(slice))
+	assert.NoError(t, empty(slice))
+
+	var i int
+	assert.NoError(t, validol.Empty(i))
+	assert.NoError(t, empty(i))
+
+	var iptr *int
+	assert.NoError(t, validol.Empty(iptr))
+	assert.NoError(t, empty(iptr))
+
+	var s string
+	assert.NoError(t, validol.Empty(s))
+	assert.NoError(t, empty(s))
+
+	var dyn interface{}
+	assert.NoError(t, validol.Empty(dyn))
+	assert.NoError(t, empty(dyn))
+	dyn = ""
+	assert.Error(t, validol.Empty(dyn))
+	assert.Error(t, empty(dyn))
+	dyn = M{}
+	assert.Error(t, validol.Empty(dyn))
+	assert.Error(t, empty(dyn))
+
+	var model M
+	assert.NoError(t, validol.Empty(model))
+	assert.NoError(t, empty(model))
+}
+
+func required[T any](t T) error {
+	return validol.Not[T](validol.Empty)(t)
+}
+
+func TestRequired(t *testing.T) {
+	var m map[int]int
+	assert.Error(t, validol.Required(m))
+	assert.Error(t, required(m))
+	m = map[int]int{}
+	assert.NoError(t, validol.Required(m))
+	assert.NoError(t, required(m))
+
+	var slice []int
+	assert.Error(t, validol.Required(slice))
+	assert.Error(t, required(slice))
+	slice = []int{}
+	assert.NoError(t, validol.Required(slice))
+	assert.NoError(t, required(slice))
+
+	var i int
+	assert.Error(t, validol.Required(i))
+	assert.Error(t, required(i))
+
+	var iptr *int
+	assert.Error(t, validol.Required(iptr))
+	assert.Error(t, required(iptr))
+
+	var s string
+	assert.Error(t, validol.Required(s))
+	assert.Error(t, required(s))
+
+	var dyn interface{}
+	assert.True(t, dyn == nil)
+	assert.Error(t, validol.Required(dyn))
+	assert.Error(t, required(dyn))
+	dyn = ""
+	assert.NoError(t, validol.Required(dyn))
+	assert.NoError(t, required(dyn))
+	dyn = M{}
+	assert.NoError(t, validol.Required(dyn))
+	assert.NoError(t, required(dyn))
+
+	var model M
+	assert.Error(t, validol.Required(model))
+	assert.Error(t, required(model))
 }
