@@ -69,6 +69,10 @@ Type `validol.Validator[T]` is equivalent to `func(T) error`.
 | Name | Input | Description | 
 | - | - | - |
 | Walk | any | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are public struct fields, slice/array elements, map keys/values |
+| Required | T | Checks that the value is different from `default` |
+| Empty | T | Checks that the value is initialized as `default` |
+| NotNil | T | Checks that the value is different from `nil` |
+| Nil | T | Checks that the value is `nil` |
 | Email | string | Email string |
 | UUID4 | string | Universally Unique Identifier UUID v4 |
 

@@ -52,6 +52,44 @@ func Walk[T any](t T) error {
 	return walkDescendants(t)
 }
 
+var _ Validator[any] = Nil
+
+func Nil[T any](t T) error {
+	if isNil(t) {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.Nil(%+v)", t))
+}
+
+var _ Validator[any] = NotNil
+
+func NotNil[T any](t T) error {
+	notNil := !isNil(t)
+	if notNil {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.NotNil(%+v)", t))
+}
+
+var _ Validator[any] = Empty
+
+func Empty[T any](t T) error {
+	if isZero(t) {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.Empty(%+v)", t))
+}
+
+var _ Validator[any] = Required
+
+func Required[T any](t T) error {
+	notZero := !isZero(t)
+	if notZero {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.Required(%+v)", t))
+}
+
 func Not[T any](fn Validator[T]) Validator[T] {
 	return func(t T) error {
 		if err := fn(t); err != nil {

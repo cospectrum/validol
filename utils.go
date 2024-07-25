@@ -17,9 +17,19 @@ func lenOf[T any](t T) int {
 func isNil[T any](t T) bool {
 	val := toReflectValue(t)
 	switch val.Kind() {
+	case reflect.Invalid:
+		return true
 	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice, reflect.UnsafePointer:
 		return val.IsNil()
 	default:
 		return false
 	}
+}
+
+func isZero[T any](t T) bool {
+	val := toReflectValue(t)
+	if val.Kind() == reflect.Invalid {
+		return true
+	}
+	return val.IsZero()
 }
