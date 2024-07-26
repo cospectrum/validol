@@ -24,6 +24,8 @@ func validationWalk[T any](in T, validateItself bool) error {
 	switch val.Kind() {
 	case reflect.Pointer:
 		return validationWalk(val.Elem(), validateItself)
+	case reflect.Interface:
+		return walk(val.Elem())
 	case reflect.Array, reflect.Slice:
 		for i := 0; i < val.Len(); i++ {
 			item := val.Index(i)

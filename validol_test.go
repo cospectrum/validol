@@ -136,19 +136,81 @@ func (m M) Validate() error {
 func TestWalk(t *testing.T) {
 	validM := &M{Pub: 1, private: 0}
 	assert.NoError(t, validol.Walk(*validM))
+	assert.NoError(t, validol.Walk(any(*validM)))
 	assert.NoError(t, validol.Walk(validM))
+	assert.NoError(t, validol.Walk(any(validM)))
 	assert.NoError(t, validol.Walk(&validM))
+	assert.NoError(t, validol.Walk(any(&validM)))
 
 	invalidM := &M{Pub: 0, private: 1}
 	assert.Error(t, validol.Walk(*invalidM))
+	assert.Error(t, validol.Walk(any(*invalidM)))
 	assert.Error(t, validol.Walk(invalidM))
+	assert.Error(t, validol.Walk(any(invalidM)))
 	assert.Error(t, validol.Walk(&invalidM))
+	assert.Error(t, validol.Walk(any(&invalidM)))
 
 	var nilM *M
 	assert.NoError(t, validol.Walk(nilM))
 
 	var dyn interface{}
 	assert.NoError(t, validol.Walk(dyn))
+
+	var ni NonZeroInt
+	assert.True(t, ni == 0)
+	assert.NoError(t, validol.Walk(ni))
+	assert.NoError(t, validol.Walk(&ni))
+	assert.Error(t, validol.Walk(any(ni))) // value under interface is child
+
+	ni = 1
+	assert.NoError(t, validol.Walk(ni))
+	assert.NoError(t, validol.Walk(&ni))
+	assert.NoError(t, validol.Walk(any(ni)))
+}
+
+func TestValidate(t *testing.T) {
+	validM := &M{Pub: 1, private: 0}
+	assert.NoError(t, validol.Validate(*validM))
+	assert.NoError(t, validol.Validate(any(*validM)))
+	assert.NoError(t, validol.Validate(validM))
+	assert.NoError(t, validol.Validate(any(validM)))
+	assert.NoError(t, validol.Validate(&validM))
+	assert.NoError(t, validol.Validate(any(&validM)))
+
+	invalidM := &M{Pub: 0, private: 1}
+	assert.Error(t, validol.Validate(*invalidM))
+	assert.Error(t, validol.Validate(any(*invalidM)))
+	assert.Error(t, validol.Validate(invalidM))
+	assert.Error(t, validol.Validate(any(invalidM)))
+	assert.Error(t, validol.Validate(&invalidM))
+	assert.Error(t, validol.Validate(any(&invalidM)))
+
+	var dyn interface{}
+	assert.NoError(t, validol.Validate(dyn))
+
+	assert.NoError(t, validol.Validate(struct{ M }{*validM}))
+	assert.NoError(t, validol.Validate(struct{ *M }{validM}))
+
+	assert.Error(t, validol.Validate(struct{ M }{*invalidM}))
+	assert.Error(t, validol.Validate(struct{ *M }{invalidM}))
+
+	// embedded interface is unexported
+	assert.NoError(t, validol.Validate(struct{ any }{invalidM}))
+
+	assert.Error(t, validol.Validate(struct{ Field any }{invalidM}))
+
+	var ni NonZeroInt
+	assert.True(t, ni == 0)
+	assert.Error(t, ni.Validate())
+	assert.Error(t, validol.Validate(ni))
+	assert.Error(t, validol.Validate(&ni))
+	assert.Error(t, validol.Validate(any(ni)))
+
+	ni = 1
+	assert.NoError(t, ni.Validate())
+	assert.NoError(t, validol.Validate(ni))
+	assert.NoError(t, validol.Validate(&ni))
+	assert.NoError(t, validol.Validate(any(ni)))
 }
 
 func TestGt(t *testing.T) {

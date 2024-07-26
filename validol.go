@@ -12,6 +12,13 @@ type Validatable interface {
 	Validate() error
 }
 
+func Validate[T any](t T) error {
+	if val, ok := any(t).(Validatable); ok {
+		return val.Validate()
+	}
+	return Walk(t)
+}
+
 func OneOf[T comparable](vals ...T) Validator[T] {
 	return func(t T) error {
 		for _, val := range vals {
