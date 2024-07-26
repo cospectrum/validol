@@ -14,8 +14,7 @@ func (e email) Validate() error {
 
 func main() {
 	emails := []email{"test@gmail.com", "test2@gmail.com"}
-
-	if err := vd.Walk(emails); err != nil {
+	if err := vd.Validate(emails); err != nil {
 		panic(err)
 	}
 	fmt.Println("emails are valid")

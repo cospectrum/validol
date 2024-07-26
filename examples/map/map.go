@@ -30,7 +30,7 @@ func main() {
 		"28ef9ebb-1653-4a34-80e0-fc6e3ae90fa2": banned,
 		"127c3be4-e475-4219-8bcc-12fba6fd6c53": online,
 	}
-	if err := vd.Walk(Map); err != nil {
+	if err := vd.Validate(Map); err != nil {
 		panic(err)
 	}
 	fmt.Println("Map is valid")
