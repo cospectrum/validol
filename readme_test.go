@@ -33,7 +33,7 @@ type User struct {
 func (u User) Validate() error {
 	return errors.Join(
 		vd.Gte(18)(u.age),
-		vd.Walk(u), // continue the `Walk` using the children's `Validate` methods
+		vd.Walk(u), // to continue the `Walk` using the descendants' `Validate` methods
 	)
 }
 
