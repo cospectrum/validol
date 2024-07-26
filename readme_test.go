@@ -1,7 +1,6 @@
 package validol_test
 
 import (
-	"errors"
 	"testing"
 
 	vd "github.com/cospectrum/validol"
@@ -27,19 +26,11 @@ func (e Email) Validate() error {
 type Info struct {
 	Email email
 	Sex   Sex
-	age   uint
-}
-
-func (info Info) Validate() error {
-	return errors.Join(
-		vd.Walk(info),
-		vd.Gte(uint(18))(info.age),
-	)
 }
 
 func run() {
 	var info Info
-	if err := info.Validate(); err != nil {
+	if err := vd.Validate(info); err != nil {
 		panic(err)
 	}
 }

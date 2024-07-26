@@ -21,10 +21,7 @@ Requires Go version `1.22.0` or greater.
 
 ## Usage
 ```go
-import (
-	"errors"
-	vd "github.com/cospectrum/validol"
-)
+import vd "github.com/cospectrum/validol"
 
 type Sex string
 
@@ -45,29 +42,22 @@ func (e Email) Validate() error {
 type Info struct {
 	Email email
 	Sex   Sex
-	age   uint
 }
 
-func (info Info) Validate() error {
-	return errors.Join(
-		vd.Walk(info),
-		vd.Gte(uint(18))(info.age),
-	)
-}
-
-func main() {
+func run() {
 	var info Info
-	if err := info.Validate(); err != nil {
+	if err := vd.Validate(info); err != nil {
 		panic(err)
 	}
 }
 ```
 
 ## Validators
-Type `validol.Validator[T]` is equivalent to `func(T) error`.
+Type `Validator[T]` is equivalent to `func(T) error`.
 
 | Name | Input | Description | 
 | - | - | - |
+| Vlidate | T | If `T` implements `Validate` then it will call it, otherwise will call `Walk` |
 | Walk | T | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are public struct fields, slice/array elements, map keys/values |
 | Required | T | Checks that the value is different from `default` |
 | Empty | T | Checks that the value is initialized as `default` |
