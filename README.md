@@ -69,13 +69,12 @@ func main() {
 
 ## Validators
 Type `Validator[T]` is equivalent to `func(T) error`. \
-For validation during recursive `Walk`, you can implement `Validatable` interface,
-which requires a single `Validate() error` method.
+`Validatable` interface requires `Validate() error` method.
 
-| Name | Input | Description | 
+| Name | Input | Description |
 | - | - | - |
-| Validate | T | If `T` has `Validate() error` method, then it will call it, otherwise will call `Walk` |
-| Walk | T | Recursively checks `Validatable descendants`. After meeting `Validatable` descendant, it will not go into its descendants, delegating control to the type via `Validate` method. The `descendants` are public struct fields, slice/array elements, map keys/values. |
+| Validate | T | If `T` is `Validatable`, then it will call `Validate` method, otherwise will call `Walk` |
+| Walk | T | Recursively calls `Validate` method for `descendants` of `T`. The descendants of the `Validatable` descendant will not be checked automatically, instead the type must continue `Walk` manually (inside its own `Validate`). The `descendants` are public struct fields, embedded types, slice/array elements, map keys/values. |
 | Required | T | Checks that the value is different from `default` |
 | Empty | T | Checks that the value is initialized as `default` |
 | NotNil | T | Checks that the value is different from `nil` |
