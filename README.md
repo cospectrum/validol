@@ -75,7 +75,7 @@ which requires a single `Validate() error` method.
 | Name | Input | Description | 
 | - | - | - |
 | Validate | T | If `T` has `Validate() error` method, then it will call it, otherwise will call `Walk` |
-| Walk | T | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are public struct fields, slice/array elements, map keys/values |
+| Walk | T | Recursively checks `Validatable descendants`. After meeting `Validatable` descendant, it will not go into its descendants, delegating control to the type via `Validate` method. The `descendants` are public struct fields, slice/array elements, map keys/values. |
 | Required | T | Checks that the value is different from `default` |
 | Empty | T | Checks that the value is initialized as `default` |
 | NotNil | T | Checks that the value is different from `nil` |
