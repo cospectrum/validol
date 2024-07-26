@@ -20,8 +20,12 @@ go get -u github.com/cospectrum/validol
 Requires Go version `1.22.0` or greater.
 
 ## Usage
+
 ```go
-import vd "github.com/cospectrum/validol"
+import (
+	"errors"
+	vd "github.com/cospectrum/validol"
+)
 
 type Sex string
 
@@ -39,25 +43,38 @@ func (e Email) Validate() error {
 	)(string(e))
 }
 
-type Info struct {
-	Email email
+type User struct {
+	Email Email
 	Sex   Sex
+	age   int
 }
 
-func run() {
-	var info Info
-	if err := vd.Validate(info); err != nil {
+func (u User) Validate() error {
+	return errors.Join(
+		vd.Gte(18)(u.age),
+		vd.Walk(u),
+	)
+}
+
+func main() {
+	users := []User{
+		{Email: "first_user@mail.com", age: 22},
+		{Email: "second_user@mail.com", Sex: "male"},
+	}
+	if err := vd.Validate(users); err != nil {
 		panic(err)
 	}
 }
 ```
 
 ## Validators
-Type `Validator[T]` is equivalent to `func(T) error`.
+Type `Validator[T]` is equivalent to `func(T) error`. \
+For validation during recursive `Walk`, you can implement `Validatable` interface,
+which requires a single `Validate() error` method.
 
 | Name | Input | Description | 
 | - | - | - |
-| Vlidate | T | If `T` implements `Validate` then it will call it, otherwise will call `Walk` |
+| Validate | T | If `T` has `Validate() error` method, then it will call it, otherwise will call `Walk` |
 | Walk | T | Recursively checks all `descendants` that have the `Validate() error` method. The `descendants` are public struct fields, slice/array elements, map keys/values |
 | Required | T | Checks that the value is different from `default` |
 | Empty | T | Checks that the value is initialized as `default` |
