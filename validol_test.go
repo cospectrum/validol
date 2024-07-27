@@ -17,6 +17,8 @@ func chain[T any](slices ...[]T) []T {
 }
 
 func TestOneOf(t *testing.T) {
+	t.Parallel()
+
 	assert.NoError(t, validol.OneOf(2, 1, 3)(1))
 	assert.Error(t, validol.OneOf(2, 3)(1))
 
@@ -40,6 +42,8 @@ func TestOneOf(t *testing.T) {
 }
 
 func TestAll(t *testing.T) {
+	t.Parallel()
+
 	A := []int{2, 1, 3}
 	B := []int{5, 4, 6}
 
@@ -72,6 +76,7 @@ func TestAll(t *testing.T) {
 }
 
 func TestAny(t *testing.T) {
+	t.Parallel()
 	A := []int{2, 1, 3}
 	B := []int{4, 5, 6}
 
@@ -136,6 +141,8 @@ func (m M) Validate() error {
 }
 
 func TestWalk(t *testing.T) {
+	t.Parallel()
+
 	validM := &M{Pub: 1, private: 0}
 	assert.NoError(t, validol.Walk(*validM))
 	assert.NoError(t, validol.Walk(any(*validM)))
@@ -171,6 +178,8 @@ func TestWalk(t *testing.T) {
 }
 
 func TestValidate(t *testing.T) {
+	t.Parallel()
+
 	validM := &M{Pub: 1, private: 0}
 	assert.NoError(t, validol.Validate(*validM))
 	assert.NoError(t, validol.Validate(any(*validM)))
@@ -216,6 +225,8 @@ func TestValidate(t *testing.T) {
 }
 
 func TestGt(t *testing.T) {
+	t.Parallel()
+
 	gt3 := validol.Gt(3)
 	assert.NoError(t, gt3(4))
 	assert.Error(t, gt3(3))
@@ -223,6 +234,8 @@ func TestGt(t *testing.T) {
 }
 
 func TestGte(t *testing.T) {
+	t.Parallel()
+
 	gte3 := validol.Gte(3)
 	assert.NoError(t, gte3(4))
 	assert.NoError(t, gte3(3))
@@ -230,6 +243,8 @@ func TestGte(t *testing.T) {
 }
 
 func TestLt(t *testing.T) {
+	t.Parallel()
+
 	lt3 := validol.Lt(3)
 	assert.Error(t, lt3(4))
 	assert.Error(t, lt3(3))
@@ -237,6 +252,8 @@ func TestLt(t *testing.T) {
 }
 
 func TestLte(t *testing.T) {
+	t.Parallel()
+
 	lte3 := validol.Lte(3)
 	assert.Error(t, lte3(4))
 	assert.NoError(t, lte3(3))
@@ -244,6 +261,8 @@ func TestLte(t *testing.T) {
 }
 
 func TestEq(t *testing.T) {
+	t.Parallel()
+
 	eq3 := validol.Eq(3)
 	assert.Error(t, eq3(4))
 	assert.NoError(t, eq3(3))
@@ -251,6 +270,8 @@ func TestEq(t *testing.T) {
 }
 
 func TestNe(t *testing.T) {
+	t.Parallel()
+
 	ne3 := validol.Ne(3)
 	assert.NoError(t, ne3(4))
 	assert.Error(t, ne3(3))
@@ -258,6 +279,8 @@ func TestNe(t *testing.T) {
 }
 
 func TestNot(t *testing.T) {
+	t.Parallel()
+
 	ne3 := validol.Ne(3)
 	eq3 := validol.Not(ne3)
 	assert.NoError(t, eq3(3))
@@ -265,6 +288,8 @@ func TestNot(t *testing.T) {
 }
 
 func TestLen(t *testing.T) {
+	t.Parallel()
+
 	lenLte3 := validol.Len[string](validol.Lte(3))
 
 	assert.Error(t, lenLte3("12345"))
@@ -287,6 +312,8 @@ func TestLen(t *testing.T) {
 }
 
 func TestStartsWith(t *testing.T) {
+	t.Parallel()
+
 	assert.NoError(t, validol.StartsWith("")(""))
 	assert.NoError(t, validol.StartsWith("")("1"))
 	assert.NoError(t, validol.StartsWith("1")("1"))
@@ -297,6 +324,8 @@ func TestStartsWith(t *testing.T) {
 }
 
 func TestEndsWith(t *testing.T) {
+	t.Parallel()
+
 	assert.NoError(t, validol.EndsWith("")(""))
 	assert.NoError(t, validol.EndsWith("")("1"))
 	assert.NoError(t, validol.EndsWith("1")("1"))
@@ -308,6 +337,8 @@ func TestEndsWith(t *testing.T) {
 }
 
 func TestContains(t *testing.T) {
+	t.Parallel()
+
 	assert.NoError(t, validol.Contains("")(""))
 	assert.NoError(t, validol.Contains("")("1"))
 	assert.NoError(t, validol.Contains("1")("1"))
@@ -319,6 +350,8 @@ func TestContains(t *testing.T) {
 }
 
 func TestContainsRune(t *testing.T) {
+	t.Parallel()
+
 	assert.NoError(t, validol.ContainsRune('1')("1"))
 	assert.NoError(t, validol.ContainsRune('a')("1a"))
 	assert.NoError(t, validol.ContainsRune('2')("12a"))
@@ -332,6 +365,8 @@ func Nil[T any](t T) error {
 }
 
 func TestNil(t *testing.T) {
+	t.Parallel()
+
 	var m map[int]int
 	assert.True(t, m == nil)
 	assert.NoError(t, validol.Nil(m))
@@ -369,6 +404,8 @@ func notNil[T any](t T) error {
 }
 
 func TestNotNil(t *testing.T) {
+	t.Parallel()
+
 	var m map[int]int
 	assert.Error(t, validol.NotNil(m))
 	assert.Error(t, notNil(m))
@@ -398,6 +435,8 @@ func empty[T any](t T) error {
 }
 
 func TestEmpty(t *testing.T) {
+	t.Parallel()
+
 	var m map[int]int
 	assert.NoError(t, validol.Empty(m))
 	assert.NoError(t, empty(m))
@@ -438,6 +477,8 @@ func required[T any](t T) error {
 }
 
 func TestRequired(t *testing.T) {
+	t.Parallel()
+
 	var m map[int]int
 	assert.Error(t, validol.Required(m))
 	assert.Error(t, required(m))
