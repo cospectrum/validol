@@ -13,7 +13,7 @@ type failedExpr struct {
 var _ error = &failedExpr{}
 
 func (e failedExpr) Error() string {
-	return fmt.Sprintf("%s failed", e.expr)
+	return e.expr + " failed"
 }
 
 func failed(expr string) error {

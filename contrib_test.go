@@ -24,6 +24,8 @@ func (e email) Validate() error {
 }
 
 func TestEmail(t *testing.T) {
+	t.Parallel()
+
 	valid := []string{
 		"valid@gmail.com",
 		"test@mail.com",
@@ -76,6 +78,8 @@ func mapF[T any, U any](elems []T, f func(T) U) []U {
 }
 
 func TestUUID4(t *testing.T) {
+	t.Parallel()
+
 	valid := []string{
 		"57b73598-8764-4ad0-a76a-679bb6640eb1",
 		"625e63f3-58f5-40b7-83a1-a72ad31acffb",
