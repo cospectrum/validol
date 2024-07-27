@@ -1,4 +1,4 @@
-.PHONY: ci build test lint fmt gofmt goimports install_goimports nilaway install_nilaway
+.PHONY: ci build test lint fmt gofmt install_gofumpt nilaway install_nilaway
 
 ci: build test lint
 
@@ -11,16 +11,13 @@ test:
 lint:
 	golangci-lint run ./...
 
-fmt: goimports gofmt 
+fmt: gofmt
 
 gofmt:
-	gofmt -w -s .
+	gofumpt -l -w .
 
-goimports: install_goimports
-	goimports -w .
-
-install_goimports:
-	which goimports || go install golang.org/x/tools/cmd/goimports@latest
+install_gofumpt:
+	which gofumpt || go install mvdan.cc/gofumpt@latest
 
 nilaway: install_nilaway
 	nilaway ./...

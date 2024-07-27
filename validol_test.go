@@ -119,8 +119,10 @@ type M struct {
 	OptionInt   *int
 }
 
-var _ validol.Validatable = M{}
-var _ validol.Validatable = &M{}
+var (
+	_ validol.Validatable = M{}
+	_ validol.Validatable = &M{}
+)
 
 func (m M) Validate() error {
 	mPtr := &m

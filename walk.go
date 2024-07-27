@@ -10,6 +10,7 @@ func walk[T any](in T) error {
 	return validationWalk(in, true)
 }
 
+//nolint:cyclop
 func validationWalk[T any](in T, validateItself bool) error {
 	val := toReflectValue(in)
 	if isNil(val) {
@@ -27,7 +28,7 @@ func validationWalk[T any](in T, validateItself bool) error {
 	case reflect.Interface:
 		return walk(val.Elem())
 	case reflect.Array, reflect.Slice:
-		for i := 0; i < val.Len(); i++ {
+		for i := range val.Len() {
 			item := val.Index(i)
 			if err := walk(item); err != nil {
 				return err
@@ -46,7 +47,7 @@ func validationWalk[T any](in T, validateItself bool) error {
 		}
 		return nil
 	case reflect.Struct:
-		for i := 0; i < val.NumField(); i++ {
+		for i := range val.NumField() {
 			field := val.Field(i)
 			if err := walk(field); err != nil {
 				return err
