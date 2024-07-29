@@ -90,6 +90,8 @@ Functions that create a `Validator[T]`.
 | `All` | ...Validator[T] | Validator[T] | Checks whether `all` validations have been completed successfully |
 | `Any` | ...Validator[T] | Validator[T] | Checks that `at least one` validation has been completed successfully |
 | `Not` | Validator[T] | Validator[T] | Logical not |
+| `And` | Validator[T], Validator[T] | Validator[T] | Checks that both validations have been completed successfully |
+| `Or` | Validator[T], Validator[T] | Validator[T] | Checks the success of one of the two validations |
 | `OneOf` | ...T | Validator[T] | Checks that the value is equal to one of the specified | 
 | `Eq` | T comparable | Validator[T] | == |
 | `Ne` | T comparable | Validator[T] | != |

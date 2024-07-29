@@ -41,6 +41,10 @@ func All[T any](validators ...Validator[T]) Validator[T] {
 	}
 }
 
+func And[T any](first, second Validator[T]) Validator[T] {
+	return All(first, second)
+}
+
 func Any[T any](validators ...Validator[T]) Validator[T] {
 	return func(t T) error {
 		var lastErr error
@@ -53,6 +57,10 @@ func Any[T any](validators ...Validator[T]) Validator[T] {
 		}
 		return lastErr
 	}
+}
+
+func Or[T any](first, second Validator[T]) Validator[T] {
+	return Any(first, second)
 }
 
 func Walk[T any](t T) error {
