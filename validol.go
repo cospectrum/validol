@@ -63,6 +63,20 @@ func Or[T any](first, second Validator[T]) Validator[T] {
 	return Any(first, second)
 }
 
+func True(b bool) error {
+	if b {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.True(%v)", b))
+}
+
+func False(b bool) error {
+	if !b {
+		return nil
+	}
+	return failed(fmt.Sprintf("validol.False(%v)", b))
+}
+
 func Walk[T any](t T) error {
 	return walkDescendants(t)
 }

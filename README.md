@@ -79,6 +79,8 @@ Type `Validator[T]` is equivalent to `func(T) error`. \
 | `Empty` | T | Checks that the value is initialized as `default` |
 | `NotNil` | T | Checks that the value is different from `nil` |
 | `Nil` | T | Checks that the value is `nil` |
+| `True` | bool | Checks that the value is `true` |
+| `False` | bool | Checks that the value is `false` |
 | `Email` | string | Email string |
 | `UUID4` | string | Universally Unique Identifier UUID v4 |
 

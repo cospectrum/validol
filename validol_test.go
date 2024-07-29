@@ -16,6 +16,16 @@ func chain[T any](slices ...[]T) []T {
 	return out
 }
 
+func TestBools(t *testing.T) {
+	t.Parallel()
+
+	assert.NoError(t, validol.True(true))
+	assert.NoError(t, validol.False(false))
+
+	assert.Error(t, validol.True(false))
+	assert.Error(t, validol.False(true))
+}
+
 func TestOneOf(t *testing.T) {
 	t.Parallel()
 
